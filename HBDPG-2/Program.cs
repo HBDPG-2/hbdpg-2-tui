@@ -22,57 +22,81 @@ Console.WriteLine("..##.....##.########..########..##.........######.........###
 Console.WriteLine(".....................................................................");
 Console.WriteLine("                            (CLI edition)                            ");
 Console.WriteLine("                             version 0.1                             ");
+Console.WriteLine();
 
 // Passphrase 1 input
 while (true)
 {
-    Console.Write("\nEnter passphrase 1: ");
+    Console.Write("Enter passphrase 1: ");
+    int currentConsoleLine = Console.CursorTop;
+
     passphrase1 = CLI.ReadPassword();
 
     if (passphrase1.Length >= 8)
     {
+        CLI.ClearLine(currentConsoleLine + 1);
         break;
     }
     else
     {
-        Console.WriteLine("\nPassphrase must be at least 8 characters long.");
+        Console.SetCursorPosition(0, currentConsoleLine + 1);
+        Console.WriteLine("Passphrase must be at least 8 characters long.");
+
+        CLI.ClearLine(currentConsoleLine);
+        Console.SetCursorPosition(0, currentConsoleLine);
     }
 }
 
 // Passphrase 2 input
 while (true)
 {
-    Console.Write("\nEnter passphrase 2: ");
+    Console.Write("Enter passphrase 2: ");
+    int currentConsoleLine = Console.CursorTop;
+
     passphrase2 = CLI.ReadPassword();
 
     if (passphrase2.Length >= 8)
     {
+        CLI.ClearLine(currentConsoleLine + 1);
         break;
     }
     else
     {
-        Console.WriteLine("\nPassphrase must be at least 8 characters long.");
+        Console.SetCursorPosition(0, currentConsoleLine + 1);
+        Console.WriteLine("Passphrase must be at least 8 characters long.");
+
+        CLI.ClearLine(currentConsoleLine);
+        Console.SetCursorPosition(0, currentConsoleLine);
     }
 }
 
 // Password length input
 while (true)
 {
-    Console.Write("\nEnter password length: ");
+    Console.Write("Enter password length: ");
+    int currentConsoleLine = Console.CursorTop;
 
-    if (int.TryParse(Console.ReadLine(), out passwordLength) && passwordLength >= 16 && passwordLength <= 64)
+    string? input = Console.ReadLine();
+
+    if (int.TryParse(input, out passwordLength) && passwordLength >= 16 && passwordLength <= 64)
     {
+        CLI.ClearLine(currentConsoleLine + 1);
         break;
     }
-    else if (passwordLength == 0)
+    else if (passwordLength == 0 && input == string.Empty)
     {
         passwordLength = 32;
+        CLI.ClearLine(currentConsoleLine + 1);
         Console.WriteLine("Using default password length of 32.");
         break;
     }
     else
     {
+        Console.SetCursorPosition(0, currentConsoleLine + 1);
         Console.WriteLine("Number must be between 16 and 64.");
+
+        CLI.ClearLine(currentConsoleLine);
+        Console.SetCursorPosition(0, currentConsoleLine);
     }
 }
 

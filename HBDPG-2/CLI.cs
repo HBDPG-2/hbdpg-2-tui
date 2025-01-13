@@ -23,4 +23,11 @@ static class CLI
 
         return password;
     }
+
+    public static void ClearLine(int line)
+    {
+        Console.SetCursorPosition(0, line);
+        Console.Write(new string(' ', Console.WindowWidth));
+        Console.SetCursorPosition(0, line);
+    }
 }
