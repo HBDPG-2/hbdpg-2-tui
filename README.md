@@ -1,12 +1,14 @@
 # HBDPG-2 (CLI edition)
 
-<p align="center"><img src="Images/Screenshot.webp" alt="HBDPG-2 screenshot"></p>
+<p align="center"><img src="Images/Screenshot.webp" width="500px" alt="HBDPG-2 screenshot"></p>
 
 
 
 ## Contents
 
 - [About](#about)
+- [Risks and Recommendations](#risks-and-recommendations)
+- [Feedback](#feedback)
 - [Credits](#credits)
 
 
@@ -16,6 +18,32 @@
 **HBDPG-2 (CLI edition)** is an open-source, cross-platform deterministic password generator for Terminal running on *.NET Runtime*. It is **3-4 times faster** than the [web version](https://hbdpg-2.github.io), but only supports Windows, macOS, and Linux.
 
 More detailed information can be found in the [main project repository](https://github.com/HBDPG-2/hbdpg-2.github.io).
+
+
+
+## Risks and Recommendations
+
+The main risk of using HBDPG-2 is the ability of an attacker to brute-force simple and popular passphrases to find out your password.
+
+**Do not use weak and short passphrases!** For optimal security, use **two distinct passphrases**. This helps ensure that even if one passphrase is compromised, your generated password remain secure. Try to choose phrases that are memorable but unique to you.
+
+**Do not use HBDPG-2 on untrusted or compromised devices!**
+
+**Do not store passphrases or passwords in plain text!** If you want to save them, use password managers or encrypt them manually (e.g. with AES).
+
+**Use unique passwords for each account.**
+
+**Use 2FA (MFA)** on all accounts whenever possible!
+
+
+
+## Feedback
+
+You can give feedback, ask a question or suggest an improvement on [this page](https://github.com/HBDPG-2/hbdpg-2-cli/discussions).
+
+If you find a bug, you can report it on [this page](https://github.com/HBDPG-2/hbdpg-2-cli/issues).
+
+If you have discovered a vulnerability, please read the [Security Policy](https://github.com/HBDPG-2/hbdpg-2-cli/security) and report the issue **privately!**
 
 
 
