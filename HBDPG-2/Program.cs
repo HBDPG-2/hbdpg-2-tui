@@ -6,9 +6,13 @@
     Licensed under the MIT License. See LICENSE file in the project root for details.
 */
 
+using TextCopy;
+
 string passphrase1;
 string passphrase2;
 int passwordLength;
+
+bool isClipboardSupported = false;
 
 Console.Clear();
 Console.WriteLine(".....................................................................");
@@ -22,7 +26,8 @@ Console.WriteLine("..##.....##.########..########..##.........######.........###
 Console.WriteLine(".....................................................................");
 Console.WriteLine("                            (CLI edition)                            ");
 Console.WriteLine("                             version 0.1                             ");
-Console.WriteLine();
+Console.WriteLine("                  (C) 2025 Piotr Kniaz. MIT license.                 ");
+Console.WriteLine("\n");
 
 // Passphrase 1 input
 while (true)
@@ -104,7 +109,26 @@ Result result = Core.Generate(passphrase1, passphrase2, passwordLength);
 
 if (result.Password != string.Empty)
 {
-    Console.WriteLine($"\nGenerated password: {result.Password}");
+    Console.Write("\nGenerated password: ");
+
+    try
+    {
+        ClipboardService.SetText(result.Password);
+
+        for (int i = 0; i < result.Password.Length; i++)
+        {
+            Console.Write("*");
+        }
+
+        Console.WriteLine("\nPassword copied to clipboard.");
+        isClipboardSupported = true;
+    }
+    catch (Exception)
+    {
+        Console.WriteLine(result.Password);
+        Console.WriteLine("Failed to copy password to clipboard.");
+    }
+
     Console.WriteLine($"\nEntropy: {result.Entropy.ToString("F2")} bits");
     Console.WriteLine($"Elapsed time: {result.ElapsedTime.ToString("F3")} s");
     // Console.WriteLine($"Attempt: {result.Attempt}");
@@ -114,7 +138,18 @@ else
     Console.WriteLine("\nFailed to generate secure password. Try another passphrases or password length.");
 }
 
-Console.WriteLine($"\n(C) 2025 Piotr Kniaz. MIT license.");
-Console.WriteLine("\nPress any key to exit.");
+Console.Write("\nPress any key to exit.");
+
+if (isClipboardSupported)
+{
+    Console.WriteLine(" Clipboard will be cleared automatically!");
+}
+
 Console.ReadKey(true);
+
+if (isClipboardSupported && ClipboardService.GetText() == result.Password)
+{
+    ClipboardService.SetText("");
+}
+
 Console.Clear();
