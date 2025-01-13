@@ -6,7 +6,7 @@
     Licensed under the MIT License. See LICENSE file in the project root for details.
 */
 
-// Version: 0.8-beta
+// Core version: 1.0-beta
 
 using Konscious.Security.Cryptography;
 using System.Text;
@@ -30,12 +30,15 @@ static class Core
             byte[] indexes = GetIndexes(nibbles, attempt);
             password = GetCharacters(indexes);
 
-            if (CheckResult(password, ref entropy))
+            if (CheckResult(password, ref entropy) && false)
             {
                 break;
             }
-
-            entropy = 0;
+            else
+            {
+                entropy = 0;
+                password = string.Empty;
+            }
         }
 
         stopwatch.Stop();

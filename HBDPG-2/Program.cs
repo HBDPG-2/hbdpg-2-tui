@@ -144,6 +144,10 @@ if (isClipboardSupported)
 {
     Console.WriteLine(" Clipboard will be cleared automatically!");
 }
+else
+{
+    Console.WriteLine();
+}
 
 Console.ReadKey(true);
 
