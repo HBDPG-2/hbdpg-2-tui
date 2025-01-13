@@ -11,13 +11,14 @@
 using Konscious.Security.Cryptography;
 using System.Text;
 using System.Diagnostics;
+
 static class Core
 {
     public static Result Generate(string passphrase1, string passphrase2, int passwordLength = 32)
     {
         Stopwatch stopwatch = Stopwatch.StartNew();
 
-        string password = string.Empty;
+        string? password = null;
         double entropy = 0;
         double elapsedTime;
         int attempt = 0;
@@ -30,14 +31,14 @@ static class Core
             byte[] indexes = GetIndexes(nibbles, attempt);
             password = GetCharacters(indexes);
 
-            if (CheckResult(password, ref entropy) && false)
+            if (CheckResult(password, ref entropy))
             {
                 break;
             }
             else
             {
                 entropy = 0;
-                password = string.Empty;
+                password = null;
             }
         }
 

@@ -107,7 +107,7 @@ while (true)
 
 Result result = Core.Generate(passphrase1, passphrase2, passwordLength);
 
-if (result.Password != string.Empty)
+if (result.Password != null)
 {
     Console.Write("\nGenerated password: ");
 

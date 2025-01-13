@@ -6,9 +6,9 @@
     Licensed under the MIT License. See LICENSE file in the project root for details.
 */
 
-internal class Result(string password, double entropy, double elapsedTime, int attempt)
+internal class Result(string? password, double entropy, double elapsedTime, int attempt)
 {
-    internal string Password { get => password; }
+    internal string? Password { get => password; }
     internal double Entropy { get => entropy; }
     internal double ElapsedTime { get => elapsedTime; }
     internal int Attempt { get => attempt; }
