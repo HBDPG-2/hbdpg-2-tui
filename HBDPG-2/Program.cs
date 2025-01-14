@@ -30,14 +30,14 @@ Console.WriteLine("\n");
 
 Console.CancelKeyPress += (sender, e) =>
 {
-    CLI.ClearClipboard(result);
+    Security.ClearClipboard(result);
     Console.Clear();
     e.Cancel = false;
 };
 
 AppDomain.CurrentDomain.ProcessExit += (sender, e) =>
 {
-    CLI.ClearClipboard(result);
+    Security.ClearClipboard(result);
     Console.Clear();
 };
 
@@ -125,13 +125,9 @@ if (result.Password != null)
 
     try
     {
-        CLI.CopyToClipboard(result);
+        Security.CopyToClipboard(result);
 
-        for (int i = 0; i < result.Password.Length; i++)
-        {
-            Console.Write("*");
-        }
-
+        Console.WriteLine(new string('*', result.Password.Length));
         Console.WriteLine("\nPassword copied to clipboard.");
         isClipboardSupported = true;
     }
@@ -150,15 +146,13 @@ else
     Console.WriteLine("\nFailed to generate secure password. Try another passphrases or password length.");
 }
 
-Console.Write("\nPress any key to exit.");
-
 if (isClipboardSupported)
 {
-    Console.WriteLine(" Clipboard will be cleared automatically!");
-}
-else
-{
     Console.WriteLine();
+    CLI.WriteCountdown(Security.RemainingTime);
+    Security.StartTimer();
 }
+
+Console.WriteLine("\nPress any key to exit.");
 
 Console.ReadKey(true);

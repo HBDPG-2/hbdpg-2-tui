@@ -33,31 +33,28 @@ static class CLI
         Console.SetCursorPosition(0, line);
     }
 
-    public static void CopyToClipboard(Result? result)
+    public static void WriteCountdown(int seconds)
     {
-        if (result != null && result.Password != null)
+        _countdownLine = Console.CursorTop;
+        Console.WriteLine($"Clipboard will be cleared in {seconds} second{(seconds > 1 ? "s" : "")} or immediately after exiting!");
+    }
+
+    public static void UpdateCountdown(object? state)
+    {
+        int seconds = Security.RemainingTime;
+        int currentConsoleLine = Console.CursorTop;
+
+        if (seconds > 0)
         {
-            try
-            {
-                ClipboardService.SetText(result.Password);
-            }
-            catch
-            {
-                throw new Exception("Clipboard can't be cleared.");
-            }
+            ClearLine(_countdownLine);
+            WriteCountdown(seconds);
+            Console.SetCursorPosition(0, currentConsoleLine);
+        }
+        else
+        {
+            Environment.Exit(0);
         }
     }
 
-    public static void ClearClipboard(Result? result)
-    {
-        if (result != null && result.Password != null && ClipboardService.GetText() == result.Password)
-        {
-            try
-            {
-                ClipboardService.SetText(string.Empty);
-            }
-            catch
-            {}
-        }
-    }
+    private static int _countdownLine;
 }
