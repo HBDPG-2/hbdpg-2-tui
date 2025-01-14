@@ -1,3 +1,5 @@
+using TextCopy;
+
 static class CLI
 {
     public static string ReadPassword()
@@ -29,5 +31,33 @@ static class CLI
         Console.SetCursorPosition(0, line);
         Console.Write(new string(' ', Console.WindowWidth));
         Console.SetCursorPosition(0, line);
+    }
+
+    public static void CopyToClipboard(Result? result)
+    {
+        if (result != null && result.Password != null)
+        {
+            try
+            {
+                ClipboardService.SetText(result.Password);
+            }
+            catch
+            {
+                throw new Exception("Clipboard can't be cleared.");
+            }
+        }
+    }
+
+    public static void ClearClipboard(Result? result)
+    {
+        if (result != null && result.Password != null && ClipboardService.GetText() == result.Password)
+        {
+            try
+            {
+                ClipboardService.SetText(string.Empty);
+            }
+            catch
+            {}
+        }
     }
 }

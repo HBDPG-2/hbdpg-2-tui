@@ -6,13 +6,12 @@
     Licensed under the MIT License. See LICENSE file in the project root for details.
 */
 
-using TextCopy;
+bool isClipboardSupported = false;
 
 string passphrase1;
 string passphrase2;
 int passwordLength;
-
-bool isClipboardSupported = false;
+Result? result = null;
 
 Console.Clear();
 Console.WriteLine(".....................................................................");
@@ -28,6 +27,19 @@ Console.WriteLine("                            (CLI edition)                    
 Console.WriteLine("                             version 0.1                             ");
 Console.WriteLine("                  (C) 2025 Piotr Kniaz. MIT license.                 ");
 Console.WriteLine("\n");
+
+Console.CancelKeyPress += (sender, e) =>
+{
+    CLI.ClearClipboard(result);
+    Console.Clear();
+    e.Cancel = false;
+};
+
+AppDomain.CurrentDomain.ProcessExit += (sender, e) =>
+{
+    CLI.ClearClipboard(result);
+    Console.Clear();
+};
 
 // Passphrase 1 input
 while (true)
@@ -105,7 +117,7 @@ while (true)
     }
 }
 
-Result result = Core.Generate(passphrase1, passphrase2, passwordLength);
+result = Core.Generate(passphrase1, passphrase2, passwordLength);
 
 if (result.Password != null)
 {
@@ -113,7 +125,7 @@ if (result.Password != null)
 
     try
     {
-        ClipboardService.SetText(result.Password);
+        CLI.CopyToClipboard(result);
 
         for (int i = 0; i < result.Password.Length; i++)
         {
@@ -150,10 +162,3 @@ else
 }
 
 Console.ReadKey(true);
-
-if (isClipboardSupported && ClipboardService.GetText() == result.Password)
-{
-    ClipboardService.SetText("");
-}
-
-Console.Clear();
