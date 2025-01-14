@@ -146,13 +146,23 @@ else
     Console.WriteLine("\nFailed to generate secure password. Try another passphrases or password length.");
 }
 
+Console.WriteLine();
+Console.WriteLine();
+
+Console.WriteLine("\nPress Esc to exit.");
+
 if (isClipboardSupported)
 {
-    Console.WriteLine();
-    CLI.WriteCountdown(Security.RemainingTime);
+    CLI.CountdownLine = Console.CursorTop - 3;
     Security.StartTimer();
 }
 
-Console.WriteLine("\nPress any key to exit.");
+// Console.ReadKey(true);
 
-Console.ReadKey(true);
+while (true)
+{
+    if (Console.ReadKey(true).Key == ConsoleKey.Escape)
+    {
+        break;
+    }
+}

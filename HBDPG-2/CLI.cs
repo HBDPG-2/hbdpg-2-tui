@@ -9,7 +9,7 @@ static class CLI
 
         do
         {
-            key = Console.ReadKey(intercept: true);
+            key = Console.ReadKey(true);
             
             if (key.Key == ConsoleKey.Backspace && password.Length > 0)
             {
@@ -35,7 +35,6 @@ static class CLI
 
     public static void WriteCountdown(int seconds)
     {
-        _countdownLine = Console.CursorTop;
         Console.WriteLine($"Clipboard will be cleared in {seconds} second{(seconds > 1 ? "s" : "")} or immediately after exiting!");
     }
 
@@ -46,7 +45,7 @@ static class CLI
 
         if (seconds > 0)
         {
-            ClearLine(_countdownLine);
+            ClearLine(CountdownLine);
             WriteCountdown(seconds);
             Console.SetCursorPosition(0, currentConsoleLine);
         }
@@ -56,5 +55,5 @@ static class CLI
         }
     }
 
-    private static int _countdownLine;
+    public static int CountdownLine {get; set; }
 }
