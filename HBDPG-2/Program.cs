@@ -5,7 +5,7 @@
 
     Licensed under the MIT License. See LICENSE file in the project root for details.
 */
-
+/*
 bool isClipboardSupported = false;
 
 string passphrase1;
@@ -166,3 +166,9 @@ while (true)
         break;
     }
 }
+*/
+
+using Terminal.Gui;
+
+Application.Run<MainWindow>();
+Application.Shutdown();
