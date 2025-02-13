@@ -10,7 +10,9 @@ public class MainWindow : Window
 
         Label appDescription = new()
         {
-            Text = "HBDPG-2\n(Hashing-based Deterministic Password Generator - 2nd Gen)",
+            Text = "HBDPG-2\n(Hashing-based Deterministic Password Generator - 2nd Gen)" +
+                "\nApp version: 0.1.0\nCore version: 1.0-beta" +
+                "\n\n(C) 2025 Piotr Kniaz. MIT license",
             TextAlignment = TextAlignment.Centered,
             Width = Dim.Fill()
         };
@@ -27,7 +29,7 @@ public class MainWindow : Window
         {
             Text = "Passphrase 1:",
             X = 1,
-            Y = Pos.Bottom(appDescription) + 1
+            Y = Pos.Bottom(appDescription) + 2
         };
 
         TextField passphrase1Input = new("")
@@ -35,7 +37,7 @@ public class MainWindow : Window
             Secret = true,
             // Position text field adjacent to the label
             X = Pos.Right(passphrase1Label) + 1,
-            Y = Pos.Bottom(appDescription) + 1,
+            Y = Pos.Bottom(appDescription) + 2,
 
             // Fill remaining horizontal space
             Width = Dim.Fill() - 1
@@ -44,7 +46,7 @@ public class MainWindow : Window
         Label passphrase2Label = new()
         {
             Text = "Passphrase 2:",
-            X = Pos.Left(passphrase1Label),
+            X = 1,
             Y = Pos.Bottom(passphrase1Label) + 1
         };
 
@@ -60,7 +62,7 @@ public class MainWindow : Window
         Label passwordLengthLabel = new()
         {
             Text = "Password length:",
-            X = Pos.Left(passphrase2Label),
+            X = 1,
             Y = Pos.Bottom(passphrase2Label) + 1
         };
 
@@ -93,9 +95,8 @@ public class MainWindow : Window
         Button generateButton = new()
         {
             Text = "Generate",
-            Y = Pos.Bottom(passwordLengthLabel) + 1,
-            // center the login button horizontally
             X = Pos.Center(),
+            Y = Pos.Bottom(passwordLengthLabel) + 1,
             IsDefault = true
         };
 
@@ -103,7 +104,7 @@ public class MainWindow : Window
         {
             Text = "Result:",
             Visible = false,
-            X = Pos.Left(passwordLengthLabel),
+            X = Pos.Center(),
             Y = Pos.Bottom(generateButton) + 2
         };
 
@@ -113,7 +114,7 @@ public class MainWindow : Window
             Secret = true,
             Visible = false,
             TextAlignment = TextAlignment.Right,
-            X = Pos.Left(resultLabel),
+            X = Pos.Center(),
             Y = Pos.Bottom(resultLabel),
             Width = Dim.Fill()
         };
@@ -131,7 +132,7 @@ public class MainWindow : Window
         {
             Text = "Entropy: 0.00 bits",
             Visible = false,
-            X = Pos.Left(resultLabel),
+            X = 1,
             Y = Pos.Bottom(showPasswordCheckbox)
         };
 
@@ -139,7 +140,7 @@ public class MainWindow : Window
         {
             Text = "Elapsed time: 0.000 s",
             Visible = false,
-            X = Pos.Left(entropyLabel),
+            X = 1,
             Y = Pos.Bottom(entropyLabel)
         };
 
