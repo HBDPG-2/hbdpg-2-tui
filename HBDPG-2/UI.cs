@@ -8,6 +8,14 @@ public class MainWindow : Window
     {
         Title = "HBDPG-2 (Ctrl+Q to quit)";
 
+        ColorScheme = new ColorScheme
+        {
+            Normal = Application.Driver.MakeAttribute(Color.White, Color.Black),
+            Focus = Application.Driver.MakeAttribute(Color.Black, Color.Gray),
+            HotNormal = Application.Driver.MakeAttribute(Color.Cyan, Color.Black),
+            HotFocus = Application.Driver.MakeAttribute(Color.Black, Color.Cyan)
+        };
+
         Label appDescription = new()
         {
             Text = "HBDPG-2\n(Hashing-based Deterministic Password Generator - 2nd Gen)" +
@@ -16,14 +24,6 @@ public class MainWindow : Window
             TextAlignment = TextAlignment.Centered,
             Width = Dim.Fill()
         };
-
-        // Application.Top.ColorScheme = new ColorScheme
-        // {
-        //     Normal = Application.Driver.MakeAttribute(Color.White, Color.Black),
-        //     Focus = Application.Driver.MakeAttribute(Color.Black, Color.Gray),
-        //     HotNormal = Application.Driver.MakeAttribute(Color.Cyan, Color.Black),
-        //     HotFocus = Application.Driver.MakeAttribute(Color.Black, Color.Cyan)
-        // };
 
         Label passphrase1Label = new()
         {
@@ -97,7 +97,8 @@ public class MainWindow : Window
             Text = "Generate",
             X = Pos.Center(),
             Y = Pos.Bottom(passwordLengthLabel) + 1,
-            IsDefault = true
+            IsDefault = true,
+            Border = new Border() { BorderStyle = BorderStyle.Double }
         };
 
         Label resultLabel = new()
