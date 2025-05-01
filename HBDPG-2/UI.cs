@@ -1,5 +1,3 @@
-// using System.Diagnostics.CodeAnalysis;
-using System.Reflection.Metadata;
 using Terminal.Gui;
 
 // namespace
@@ -9,23 +7,25 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         Title = "HBDPG-2 (Ctrl+Q to quit)";
+        Colors.Error = new ColorScheme {
+            Normal = Application.Driver.MakeAttribute(Color.White, Color.Red),
+            Focus = Application.Driver.MakeAttribute(Color.Black, Color.Gray),
+            HotNormal = Application.Driver.MakeAttribute(Color.White, Color.Red),
+            HotFocus = Application.Driver.MakeAttribute(Color.Black, Color.Gray)
+        };
 
         ColorScheme = new ColorScheme
         {
             Normal = Application.Driver.MakeAttribute(Color.White, Color.Black),
             Focus = Application.Driver.MakeAttribute(Color.Black, Color.Gray),
-            HotNormal = Application.Driver.MakeAttribute(Color.Cyan, Color.Black),
-            HotFocus = Application.Driver.MakeAttribute(Color.Black, Color.Cyan)
+            HotNormal = Application.Driver.MakeAttribute(Color.White, Color.Black),
+            HotFocus = Application.Driver.MakeAttribute(Color.Black, Color.Gray)
         };
 
         InitializeUI();
         SetupEvents();
     }
 
-    // [MemberNotNull(nameof(_appDescription), nameof(_passphrase1Label), nameof(_passphrase1Input),
-    //     nameof(_passphrase2Label), nameof(_passphrase2Input), nameof(_passwordLengthLabel),
-    //     nameof(_passwordLengthInput), nameof(_generateButton), nameof(_resultLabel), nameof(_resultField),
-    //     nameof(_showPasswordCheckbox), nameof(_entropyLabel), nameof(_elapsedTimeLabel))]
     private void InitializeUI()
     {
         if (Clipboard.IsSupported)
@@ -33,9 +33,9 @@ public partial class MainWindow : Window
             _clearButton.Text = "Clear fields and clipboard";
         }
 
-        Add(_appDescription, _passphrase1Label, _passphrase1Input, _passphrase2Label, _passphrase2Input,
-            _passwordLengthLabel, _passwordLengthInput, _generateButton, _clearButton, _resultLabel,
-            _resultField, _showPasswordCheckbox, _entropyLabel, _elapsedTimeLabel);
+        Add(_appName, _appDescription, _passphrase1Label, _passphrase1Input, _passphrase2Label, _passphrase2Input,
+            _passwordLengthLabel, _passwordLengthInput, _generateButton, _clearButton, _resultLabel, _resultField,
+            _showPasswordCheckbox, _entropyLabel, _elapsedTimeLabel);
     }
 
     private void SetupEvents()
@@ -88,11 +88,11 @@ public partial class MainWindow : Window
 
         if (_passphrase1.Length < 8 || _passphrase2.Length < 8)
         {
-            MessageBox.ErrorQuery("Passphrase is too short", "Passphrases must be at least 8 characters long.", "Ok");
+            MessageBox.ErrorQuery("Passphrase is too short", "Passphrases must be at least 8 characters long.", "OK");
         }
         else if (_passwordLength < 16 || _passwordLength > 64)
         {
-            MessageBox.ErrorQuery("Invalid password length", $"Number must be between 16 and 64.", "Ok");
+            MessageBox.ErrorQuery("Invalid password length", $"Number must be between 16 and 64.", "OK");
         }
         else
         {

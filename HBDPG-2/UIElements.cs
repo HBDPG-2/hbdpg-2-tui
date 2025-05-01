@@ -4,27 +4,38 @@ using Terminal.Gui;
 
 public partial class MainWindow : Window
 {
-    private static Label _appDescription = new()
+    private static Label _appName = new()
     {
-        Text = "HBDPG-2\n(Hashing-based Deterministic Password Generator - 2nd Gen)" +
-               "\nApp version: 0.1.0-dev\nCore version: 1.0-beta" +
-               "\n\n(C) 2025 Piotr Kniaz. MIT license",
+        Text = "HBDPG-2\n(Hashing-based Deterministic Password Generator - 2nd Gen)",
+        ColorScheme = new()
+        {
+            Normal = Application.Driver.MakeAttribute(Color.White, Color.Magenta)
+        },
         TextAlignment = TextAlignment.Centered,
         Width = Dim.Fill()
+    };
+
+    private static Label _appDescription = new()
+    {
+        Text = "App version: 0.1.0-dev\nCore version: 1.0-beta" +
+               "\n(C) 2025 Piotr Kniaz. MIT license",
+        TextAlignment = TextAlignment.Centered,
+        Width = Dim.Fill(),
+        Y = Pos.Bottom(_appName)
     };
 
     private static Label _passphrase1Label = new()
     {
         Text = "Passphrase 1:",
         X = 1,
-        Y = Pos.Bottom(_appDescription) + 2
+        Y = Pos.Bottom(_appDescription) + 1
     };
 
     private static TextField _passphrase1Input = new("")
     {
         Secret = true,
         X = Pos.Right(_passphrase1Label) + 1,
-        Y = Pos.Bottom(_appDescription) + 2,
+        Y = Pos.Bottom(_appDescription) + 1,
         Width = Dim.Fill() - 1
     };
 
@@ -63,7 +74,6 @@ public partial class MainWindow : Window
         X = Pos.Center(),
         Y = Pos.Bottom(_passwordLengthLabel) + 1,
         IsDefault = true
-        // Border = new Border() { BorderStyle = BorderStyle.Double }
     };
 
     private static Button _clearButton = new()
@@ -101,11 +111,11 @@ public partial class MainWindow : Window
         Width = Dim.Fill(),
         ColorScheme = new()
         {
-            Normal = new Terminal.Gui.Attribute(Color.Black, Color.Gray),
-            Focus = new Terminal.Gui.Attribute(Color.Black, Color.Gray),
-            HotNormal = new Terminal.Gui.Attribute(Color.Black, Color.Gray),
-            HotFocus = new Terminal.Gui.Attribute(Color.Black, Color.Gray),
-            Disabled = new Terminal.Gui.Attribute(Color.Black, Color.Gray)
+            Normal = Application.Driver.MakeAttribute(Color.White, Color.Magenta),
+            Focus = Application.Driver.MakeAttribute(Color.Gray, Color.Magenta),
+            HotNormal = Application.Driver.MakeAttribute(Color.White, Color.Magenta),
+            HotFocus = Application.Driver.MakeAttribute(Color.Gray, Color.Magenta),
+            Disabled = Application.Driver.MakeAttribute(Color.White, Color.Magenta)
         }
     };
 
