@@ -34,8 +34,8 @@ public partial class MainWindow : Window
         }
 
         Add(_appName, _appDescription, _passphrase1Label, _passphrase1Input, _passphrase2Label, _passphrase2Input,
-            _passwordLengthLabel, _passwordLengthInput, _generateButton, _clearButton, _resultLabel, _resultField,
-            _showPasswordCheckbox, _entropyLabel, _elapsedTimeLabel);
+            _passwordLengthLabel, _passwordLengthInput, _generateButton, _generateLabel, _clearButton, _autoClearLabel,
+            _resultLabel, _resultField, _showPasswordCheckbox, _entropyLabel, _elapsedTimeLabel, _passwordCopiedLabel);
     }
 
     private void SetupEvents()
@@ -76,7 +76,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void Generate()
+    private async void Generate()
     {
         _passphrase1 = _passphrase1Input.Text.ToString() ?? string.Empty;
         _passphrase2 = _passphrase2Input.Text.ToString() ?? string.Empty;
@@ -92,13 +92,27 @@ public partial class MainWindow : Window
         }
         else if (_passwordLength < 16 || _passwordLength > 64)
         {
-            MessageBox.ErrorQuery("Invalid password length", $"Number must be between 16 and 64.", "OK");
+            MessageBox.ErrorQuery("Invalid password length", "Number must be between 16 and 64.", "OK");
         }
         else
         {
-            Result result = Core.Generate(_passphrase1, _passphrase2, _passwordLength);
+            _generateButton.Visible = false;
+            _generateLabel.Visible = true;
+
+            Result result = await Task.Run(() => Core.Generate(_passphrase1, _passphrase2, _passwordLength));
+
+            _generateLabel.Visible = false;
+            _generateButton.Visible = true;
+
+            if (result.Password is null)
+            {
+                MessageBox.ErrorQuery("Failed to generate secure password", "Try another passphrases or password length.", "OK");
+                ClearFieldsAndClipboard();
+                return;
+            }
 
             _clearButton.Visible = true;
+            _autoClearLabel.Visible = true;
 
             _resultLabel.Visible = true;
             _resultField.Text = result.Password;
@@ -117,6 +131,7 @@ public partial class MainWindow : Window
             if (Clipboard.TrySetClipboardData(result.Password))
             {
                 _resultField.CanFocus = false;
+                _passwordCopiedLabel.Visible = true;
             }
             else
             {
@@ -140,15 +155,18 @@ public partial class MainWindow : Window
         _passphrase2Input.Text = string.Empty;
         _passwordLengthInput.Text = "32";
 
+        _autoClearLabel.Text = "Autoclear in 60 s";
         _resultField.Text = string.Empty;
         _entropyLabel.Text = "Entropy: 0.00 bits";
         _elapsedTimeLabel.Text = "Elapsed time: 0.000 s";
 
+        _autoClearLabel.Visible = false;
         _resultLabel.Visible = false;
         _resultField.Visible = false;
         _showPasswordCheckbox.Visible = false;
         _entropyLabel.Visible = false;
         _elapsedTimeLabel.Visible = false;
+        _passwordCopiedLabel.Visible = false;
 
         _passphrase1Input.SetFocus();
         _clearButton.Visible = false;

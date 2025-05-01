@@ -76,6 +76,14 @@ public partial class MainWindow : Window
         IsDefault = true
     };
 
+    private static Label _generateLabel = new()
+    {
+        Text = "Generating...",
+        Visible = false,
+        X = Pos.Center(),
+        Y = Pos.Bottom(_passwordLengthLabel) + 1,
+    };
+
     private static Button _clearButton = new()
     {
         Text = "Clear fields",
@@ -84,20 +92,20 @@ public partial class MainWindow : Window
         Y = Pos.Bottom(_generateButton)
     };
 
-    // private static Label _generateLabel = new()
-    // {
-    //     Text = "Generating...",
-    //     Visible = false,
-    //     X = Pos.Center(),
-    //     Y = Pos.Bottom(_passwordLengthLabel) + 1,
-    // };
+    private static Label _autoClearLabel = new()
+    {
+        Text = "Autoclear in 60 s",
+        Visible = false,
+        X = Pos.Center(),
+        Y = Pos.Bottom(_clearButton)
+    };
 
     private static Label _resultLabel = new()
     {
         Text = "Result:",
         Visible = false,
         X = Pos.Center(),
-        Y = Pos.Bottom(_generateButton) + 2
+        Y = Pos.Bottom(_autoClearLabel) + 1
     };
 
     private static TextField _resultField = new("")
@@ -142,6 +150,14 @@ public partial class MainWindow : Window
         Visible = false,
         X = 1,
         Y = Pos.Bottom(_entropyLabel)
+    };
+
+    private static Label _passwordCopiedLabel = new()
+    {
+        Text = "Password copied to clipboard",
+        Visible = false,
+        X = Pos.Center(),
+        Y = Pos.Bottom(_elapsedTimeLabel)
     };
 
     private string _passphrase1 = string.Empty;
