@@ -1,0 +1,132 @@
+using Terminal.Gui;
+
+// namespace
+
+public partial class MainWindow : Window
+{
+    private static Label _appDescription = new()
+    {
+        Text = "HBDPG-2\n(Hashing-based Deterministic Password Generator - 2nd Gen)" +
+               "\nApp version: 0.1.0-dev\nCore version: 1.0-beta" +
+               "\n\n(C) 2025 Piotr Kniaz. MIT license",
+        TextAlignment = TextAlignment.Centered,
+        Width = Dim.Fill()
+    };
+
+    private static Label _passphrase1Label = new()
+    {
+        Text = "Passphrase 1:",
+        X = 1,
+        Y = Pos.Bottom(_appDescription) + 2
+    };
+
+    private static TextField _passphrase1Input = new("")
+    {
+        Secret = true,
+        X = Pos.Right(_passphrase1Label) + 1,
+        Y = Pos.Bottom(_appDescription) + 2,
+        Width = Dim.Fill() - 1
+    };
+
+    private static Label _passphrase2Label  = new()
+    {
+        Text = "Passphrase 2:",
+        X = 1,
+        Y = Pos.Bottom(_passphrase1Label) + 1
+    };
+
+    private static TextField _passphrase2Input = new("")
+    {
+        Secret = true,
+        X = Pos.Right(_passphrase2Label) + 1,
+        Y = Pos.Top(_passphrase2Label),
+        Width = Dim.Fill() - 1
+    };
+
+    private static Label _passwordLengthLabel = new()
+    {
+        Text = "Password length:",
+        X = 1,
+        Y = Pos.Bottom(_passphrase2Label) + 1
+    };
+
+    private static TextField _passwordLengthInput = new("32")
+    {
+        X = Pos.Right(_passwordLengthLabel) + 1,
+        Y = Pos.Top(_passwordLengthLabel),
+        Width = Dim.Fill() - 1
+    };
+
+    private static Button _generateButton = new()
+    {
+        Text = "Generate",
+        X = Pos.Center(),
+        Y = Pos.Bottom(_passwordLengthLabel) + 1,
+        IsDefault = true
+        // Border = new Border() { BorderStyle = BorderStyle.Double }
+    };
+
+    // private static Label _generateLabel = new()
+    // {
+    //     Text = "Generating...",
+    //     Visible = false,
+    //     X = Pos.Center(),
+    //     Y = Pos.Bottom(_passwordLengthLabel) + 1,
+    // };
+
+    private static Label _resultLabel = new()
+    {
+        Text = "Result:",
+        Visible = false,
+        X = Pos.Center(),
+        Y = Pos.Bottom(_generateButton) + 2
+    };
+
+    private static TextField _resultField = new("")
+    {
+        ReadOnly = true,
+        Secret = true,
+        Visible = false,
+        TextAlignment = TextAlignment.Right,
+        X = Pos.Center(),
+        Y = Pos.Bottom(_resultLabel),
+        Width = Dim.Fill(),
+        ColorScheme = new()
+        {
+            Normal = new Terminal.Gui.Attribute(Color.Black, Color.Gray),
+            Focus = new Terminal.Gui.Attribute(Color.Black, Color.Gray),
+            HotNormal = new Terminal.Gui.Attribute(Color.Black, Color.Gray),
+            HotFocus = new Terminal.Gui.Attribute(Color.Black, Color.Gray),
+            Disabled = new Terminal.Gui.Attribute(Color.Black, Color.Gray)
+        }
+    };
+
+    private static CheckBox _showPasswordCheckbox = new()
+    {
+        Text = "Show password",
+        Checked = false,
+        Visible = false,
+        X = Pos.Center(),
+        Y = Pos.Bottom(_resultField)
+    };
+
+    private static Label _entropyLabel = new()
+    {
+        Text = "Entropy: 0.00 bits",
+        Visible = false,
+        X = 1,
+        Y = Pos.Bottom(_showPasswordCheckbox)
+    };
+
+    private static Label _elapsedTimeLabel = new()
+    {
+        Text = "Elapsed time: 0.000 s",
+        Visible = false,
+        X = 1,
+        Y = Pos.Bottom(_entropyLabel)
+    };
+
+    private string _passphrase1 = string.Empty;
+    private string _passphrase2 = string.Empty;
+    private int _passwordLength;
+}
