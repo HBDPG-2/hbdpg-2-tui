@@ -66,6 +66,14 @@ public partial class MainWindow : Window
         // Border = new Border() { BorderStyle = BorderStyle.Double }
     };
 
+    private static Button _clearButton = new()
+    {
+        Text = "Clear fields",
+        Visible = false,
+        X = Pos.Center(),
+        Y = Pos.Bottom(_generateButton)
+    };
+
     // private static Label _generateLabel = new()
     // {
     //     Text = "Generating...",

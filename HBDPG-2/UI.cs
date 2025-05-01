@@ -1,4 +1,5 @@
 // using System.Diagnostics.CodeAnalysis;
+using System.Reflection.Metadata;
 using Terminal.Gui;
 
 // namespace
@@ -27,15 +28,21 @@ public partial class MainWindow : Window
     //     nameof(_showPasswordCheckbox), nameof(_entropyLabel), nameof(_elapsedTimeLabel))]
     private void InitializeUI()
     {
+        if (Clipboard.IsSupported)
+        {
+            _clearButton.Text = "Clear fields and clipboard";
+        }
+
         Add(_appDescription, _passphrase1Label, _passphrase1Input, _passphrase2Label, _passphrase2Input,
-            _passwordLengthLabel, _passwordLengthInput, _generateButton, _resultLabel, _resultField,
-            _showPasswordCheckbox, _entropyLabel, _elapsedTimeLabel);
+            _passwordLengthLabel, _passwordLengthInput, _generateButton, _clearButton, _resultLabel,
+            _resultField, _showPasswordCheckbox, _entropyLabel, _elapsedTimeLabel);
     }
 
     private void SetupEvents()
     {
         _passwordLengthInput.TextChanging += OnPasswordLengthChanged;
         _generateButton.Clicked += Generate;
+        _clearButton.Clicked += ClearFieldsAndClipboard;
         _showPasswordCheckbox.Toggled += ShowPassword;
     }
 
@@ -91,6 +98,8 @@ public partial class MainWindow : Window
         {
             Result result = Core.Generate(_passphrase1, _passphrase2, _passwordLength);
 
+            _clearButton.Visible = true;
+
             _resultLabel.Visible = true;
             _resultField.Text = result.Password;
             _resultField.Width = _passwordLength;
@@ -114,5 +123,34 @@ public partial class MainWindow : Window
                 
             }
         }
+    }
+
+    private void ClearFieldsAndClipboard()
+    {
+        if (Clipboard.TryGetClipboardData(out string data) && data == _resultField.Text)
+        {
+            Clipboard.TrySetClipboardData(string.Empty);
+        }
+
+        _passphrase1 = string.Empty;
+        _passphrase2 = string.Empty;
+        _passwordLength = 0;
+
+        _passphrase1Input.Text = string.Empty;
+        _passphrase2Input.Text = string.Empty;
+        _passwordLengthInput.Text = "32";
+
+        _resultField.Text = string.Empty;
+        _entropyLabel.Text = "Entropy: 0.00 bits";
+        _elapsedTimeLabel.Text = "Elapsed time: 0.000 s";
+
+        _resultLabel.Visible = false;
+        _resultField.Visible = false;
+        _showPasswordCheckbox.Visible = false;
+        _entropyLabel.Visible = false;
+        _elapsedTimeLabel.Visible = false;
+
+        _passphrase1Input.SetFocus();
+        _clearButton.Visible = false;
     }
 }
