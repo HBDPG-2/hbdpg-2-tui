@@ -44,6 +44,8 @@ public partial class MainWindow : Window
         _generateButton.Clicked += Generate;
         _clearButton.Clicked += ClearFieldsAndClipboard;
         _showPasswordCheckbox.Toggled += ShowPassword;
+
+        Closing += OnClosed;
     }
 
     private void OnPasswordLengthChanged(TextChangingEventArgs args)
@@ -98,6 +100,11 @@ public partial class MainWindow : Window
         {
             _generateButton.Visible = false;
             _generateLabel.Visible = true;
+            _autoClearRemaining = 60;
+            _autoClearLabel.Text = $"Autoclear in {_autoClearRemaining} s";
+            _autoClearLabel.Visible = false;
+            _clearButton.Visible = false;
+            Application.MainLoop.RemoveTimeout(_timer);
 
             Result result = await Task.Run(() => Core.Generate(_passphrase1, _passphrase2, _passwordLength));
 
@@ -128,6 +135,8 @@ public partial class MainWindow : Window
             _elapsedTimeLabel.Text = $"Elapsed time: {result.ElapsedTime:f3} s";
             _elapsedTimeLabel.Visible = true;
 
+            _timer = Application.MainLoop.AddTimeout(TimeSpan.FromSeconds(1), Counter);
+
             if (Clipboard.TrySetClipboardData(result.Password))
             {
                 _resultField.CanFocus = false;
@@ -155,7 +164,9 @@ public partial class MainWindow : Window
         _passphrase2Input.Text = string.Empty;
         _passwordLengthInput.Text = "32";
 
-        _autoClearLabel.Text = "Autoclear in 60 s";
+        Application.MainLoop.RemoveTimeout(_timer);
+        _autoClearRemaining = 60;
+        _autoClearLabel.Text = $"Autoclear in {_autoClearRemaining} s";
         _resultField.Text = string.Empty;
         _entropyLabel.Text = "Entropy: 0.00 bits";
         _elapsedTimeLabel.Text = "Elapsed time: 0.000 s";
@@ -171,4 +182,30 @@ public partial class MainWindow : Window
         _passphrase1Input.SetFocus();
         _clearButton.Visible = false;
     }
+
+    private void OnClosed(EventArgs args)
+    {
+        ClearFieldsAndClipboard();
+    }
+
+    private bool Counter(MainLoop loop)
+    {
+        if (_autoClearRemaining != 0)
+        {
+            _autoClearLabel.Text = $"Autoclear in {--_autoClearRemaining} s";
+            return true;
+        }
+        else
+        {
+            ClearFieldsAndClipboard();
+            return false;
+        }
+    }
+
+    private string _passphrase1 = string.Empty;
+    private string _passphrase2 = string.Empty;
+    private int _passwordLength;
+
+    private object? _timer;
+    private int _autoClearRemaining = 60;
 }

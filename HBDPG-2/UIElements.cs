@@ -159,8 +159,4 @@ public partial class MainWindow : Window
         X = Pos.Center(),
         Y = Pos.Bottom(_elapsedTimeLabel)
     };
-
-    private string _passphrase1 = string.Empty;
-    private string _passphrase2 = string.Empty;
-    private int _passwordLength;
 }
