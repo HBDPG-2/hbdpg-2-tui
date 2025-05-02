@@ -1,3 +1,11 @@
+/*  Copyright (C) 2025 Piotr Kniaz
+
+    This file is part of HBDPG-2.
+    Repository: https://github.com/HBDPG-2/hbdpg-2-tui
+
+    Licensed under the MIT License. See LICENSE file in the project root for details.
+*/
+
 using Terminal.Gui;
 
 // namespace
@@ -17,7 +25,7 @@ public partial class MainWindow : Window
 
     private static Label _appDescription = new()
     {
-        Text = "App version: 0.1.0-dev\nCore version: 1.0-beta" +
+        Text = "App version: 1.0.0-beta.0\nCore version: 1.0-beta" +
                "\n(C) 2025 Piotr Kniaz. MIT license",
         TextAlignment = TextAlignment.Centered,
         Width = Dim.Fill(),

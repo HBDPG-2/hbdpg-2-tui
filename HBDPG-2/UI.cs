@@ -1,3 +1,11 @@
+/*  Copyright (C) 2025 Piotr Kniaz
+
+    This file is part of HBDPG-2.
+    Repository: https://github.com/HBDPG-2/hbdpg-2-tui
+
+    Licensed under the MIT License. See LICENSE file in the project root for details.
+*/
+
 using Terminal.Gui;
 
 // namespace
@@ -28,14 +36,18 @@ public partial class MainWindow : Window
 
     private void InitializeUI()
     {
+        Add(_appName, _appDescription, _passphrase1Label, _passphrase1Input, _passphrase2Label, _passphrase2Input,
+            _passwordLengthLabel, _passwordLengthInput, _generateButton, _generateLabel, _clearButton, _autoClearLabel,
+            _resultLabel, _resultField, _showPasswordCheckbox, _entropyLabel, _elapsedTimeLabel, _passwordCopiedLabel);
+        
         if (Clipboard.IsSupported)
         {
             _clearButton.Text = "Clear fields and clipboard";
         }
-
-        Add(_appName, _appDescription, _passphrase1Label, _passphrase1Input, _passphrase2Label, _passphrase2Input,
-            _passwordLengthLabel, _passwordLengthInput, _generateButton, _generateLabel, _clearButton, _autoClearLabel,
-            _resultLabel, _resultField, _showPasswordCheckbox, _entropyLabel, _elapsedTimeLabel, _passwordCopiedLabel);
+        else
+        {
+            MessageBox.ErrorQuery("Clipboard is not supported", "You may encounter problems when trying to copy!", "OK");
+        }
     }
 
     private void SetupEvents()

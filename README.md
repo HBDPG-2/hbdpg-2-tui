@@ -52,8 +52,8 @@ If you have discovered a vulnerability, please read the [Security Policy](https:
 **Used Resources:**
 
 - [Konscious.Security.Cryptography.Argon2](https://github.com/kmaragon/Konscious.Security.Cryptography) by Keef Aragon (v1.3.1)
-<!-- - [TextCopy](https://github.com/CopyText/TextCopy) by Simon Cropp (v6.2.1) -->
 - [Terminal.Gui](https://github.com/gui-cs/Terminal.Gui) by gui-cs (v1.18.1)
+<!-- - [TextCopy](https://github.com/CopyText/TextCopy) by Simon Cropp (v6.2.1) -->
 
 ---
 
