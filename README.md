@@ -1,4 +1,4 @@
-# HBDPG-2 (CLI edition)
+# HBDPG-2 (Text-based UI)
 
 <p align="center"><img src="Images/Screenshot.webp" width="500px" alt="HBDPG-2 screenshot"></p>
 
@@ -15,7 +15,7 @@
 
 ## About
 
-**HBDPG-2 (CLI edition)** is an open-source, cross-platform deterministic password generator for Terminal running on *.NET Runtime*. It is **3-4 times faster** than the [web version](https://hbdpg-2.github.io), but only supports Windows, macOS, and Linux.
+**HBDPG-2 (TUI edition)** is an open-source, cross-platform deterministic password generator for Terminal running on *.NET Runtime*. It is **3-4 times faster** than the [web version](https://hbdpg-2.github.io), but only supports Windows and macOS.
 
 More detailed information can be found in the [main project repository](https://github.com/HBDPG-2/hbdpg-2.github.io).
 
@@ -39,9 +39,9 @@ The main risk of using HBDPG-2 is the ability of an attacker to brute-force simp
 
 ## Feedback
 
-If you find a bug, you can report it on [this page](https://github.com/HBDPG-2/hbdpg-2-cli/issues).
+If you find a bug, you can report it on [this page](https://github.com/HBDPG-2/hbdpg-2-tui/issues).
 
-If you have discovered a vulnerability, please read the [Security Policy](https://github.com/HBDPG-2/hbdpg-2-cli/security/policy) and report the issue **privately!**
+If you have discovered a vulnerability, please read the [Security Policy](https://github.com/HBDPG-2/hbdpg-2-tui/security/policy) and report the issue **privately!**
 
 
 
@@ -52,10 +52,11 @@ If you have discovered a vulnerability, please read the [Security Policy](https:
 **Used Resources:**
 
 - [Konscious.Security.Cryptography.Argon2](https://github.com/kmaragon/Konscious.Security.Cryptography) by Keef Aragon (v1.3.1)
-- [TextCopy](https://github.com/CopyText/TextCopy) by Simon Cropp (v6.2.1)
+<!-- - [TextCopy](https://github.com/CopyText/TextCopy) by Simon Cropp (v6.2.1) -->
+- [Terminal.Gui](https://github.com/gui-cs/Terminal.Gui) by gui-cs (v1.18.1)
 
 ---
 
-<p align="center"><a href="https://github.com/HBDPG-2/hbdpg-2-cli/blob/master/LICENSE">MIT License</a></p>
+<p align="center"><a href="https://github.com/HBDPG-2/hbdpg-2-tui/blob/master/LICENSE">MIT License</a></p>
 
 <p align="center">© 2025 Piotr Kniaz</p>
