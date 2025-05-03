@@ -11,8 +11,8 @@
     <PublishTrimmed>true</PublishTrimmed>
 
     <ApplicationIcon>Properties/Icon.ico</ApplicationIcon>
-    <Version>1.0.0-beta.2</Version>
-    <FileVersion>1.0.0.2</FileVersion>
+    <Version>1.0.0-beta.3</Version>
+    <FileVersion>1.0.0.3</FileVersion>
     <Authors>Piotr Kniaz</Authors>
     <Product>HBDPG-2</Product>
     <Description>Deterministic password generator</Description>

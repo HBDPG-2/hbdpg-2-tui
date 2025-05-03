@@ -13,6 +13,9 @@ namespace HBDPG2.UI;
 
 public partial class MainWindow : Window
 {
+    private static string _appVersion = Assembly.GetExecutingAssembly()
+                                        .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+                                        .InformationalVersion.Split('+')[0] ?? "unknown";
     private static Label _appNameLabel = new()
     {
         Text = "HBDPG-2\n(Hashing-based Deterministic Password Generator - 2nd Gen)",
@@ -169,8 +172,4 @@ public partial class MainWindow : Window
         X = Pos.Center(),
         Y = Pos.Bottom(_elapsedTimeLabel)
     };
-
-    private static string _appVersion = Assembly.GetExecutingAssembly()
-                                        .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
-                                        .InformationalVersion.Split('+')[0] ?? "unknown";
 }
