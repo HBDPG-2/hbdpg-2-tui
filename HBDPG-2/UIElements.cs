@@ -6,6 +6,7 @@
     Licensed under the MIT License. See LICENSE file in the project root for details.
 */
 
+using System.Reflection;
 using Terminal.Gui;
 
 // namespace
@@ -25,8 +26,10 @@ public partial class MainWindow : Window
 
     private static Label _appDescription = new()
     {
-        Text = "App version: 1.0.0-beta.0\nCore version: 1.0-beta" +
-               "\n(C) 2025 Piotr Kniaz. MIT license",
+        Text = $"App version: {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+                               .InformationalVersion.Split('+')[0] ?? "unknown"}"
+               + "\nCore version: 1.0-beta"
+               + "\n(C) 2025 Piotr Kniaz. MIT license",
         TextAlignment = TextAlignment.Centered,
         Width = Dim.Fill(),
         Y = Pos.Bottom(_appName)
