@@ -6,6 +6,8 @@
     Licensed under the MIT License. See LICENSE file in the project root for details.
 */
 
+namespace HBDPG2.Core;
+
 internal struct Result(string? password, double entropy, double elapsedTime, int attempt)
 {
     internal readonly string? Password { get => password; }

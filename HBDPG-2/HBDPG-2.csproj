@@ -3,13 +3,27 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
-    <RootNamespace>HBDPG_2</RootNamespace>
+    <RootNamespace>HBDPG2</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
     <PublishTrimmed>true</PublishTrimmed>
+
+    <ApplicationIcon>Properties/Icon.ico</ApplicationIcon>
+    <Version>1.0.0-beta.2</Version>
+    <FileVersion>1.0.0.2</FileVersion>
+    <Authors>Piotr Kniaz</Authors>
+    <Product>HBDPG-2</Product>
+    <Description>Deterministic password generator</Description>
+    <Copyright>Copyright © 2025 Piotr Kniaz</Copyright>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="Properties/Icon.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Konscious.Security.Cryptography.Argon2" Version="1.3.1" />

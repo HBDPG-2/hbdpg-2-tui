@@ -8,6 +8,8 @@
 
 // Core version: 1.0-beta
 
+namespace HBDPG2.Core;
+
 using Konscious.Security.Cryptography;
 using System.Text;
 using System.Diagnostics;
