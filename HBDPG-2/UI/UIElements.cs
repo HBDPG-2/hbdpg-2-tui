@@ -9,11 +9,11 @@
 using System.Reflection;
 using Terminal.Gui;
 
-// namespace
+namespace HBDPG2.UI;
 
 public partial class MainWindow : Window
 {
-    private static Label _appName = new()
+    private static Label _appNameLabel = new()
     {
         Text = "HBDPG-2\n(Hashing-based Deterministic Password Generator - 2nd Gen)",
         ColorScheme = new()
@@ -24,29 +24,28 @@ public partial class MainWindow : Window
         Width = Dim.Fill()
     };
 
-    private static Label _appDescription = new()
+    private static Label _appDescriptionLabel = new()
     {
-        Text = $"App version: {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
-                               .InformationalVersion.Split('+')[0] ?? "unknown"}"
+        Text = $"App version: {_appVersion}"
                + "\nCore version: 1.0-beta"
                + "\n(C) 2025 Piotr Kniaz. MIT license",
         TextAlignment = TextAlignment.Centered,
         Width = Dim.Fill(),
-        Y = Pos.Bottom(_appName)
+        Y = Pos.Bottom(_appNameLabel)
     };
 
     private static Label _passphrase1Label = new()
     {
         Text = "Passphrase 1:",
         X = 1,
-        Y = Pos.Bottom(_appDescription) + 1
+        Y = Pos.Bottom(_appDescriptionLabel) + 1
     };
 
     private static TextField _passphrase1Input = new("")
     {
         Secret = true,
         X = Pos.Right(_passphrase1Label) + 1,
-        Y = Pos.Bottom(_appDescription) + 1,
+        Y = Pos.Bottom(_appDescriptionLabel) + 1,
         Width = Dim.Fill() - 1
     };
 
@@ -170,4 +169,8 @@ public partial class MainWindow : Window
         X = Pos.Center(),
         Y = Pos.Bottom(_elapsedTimeLabel)
     };
+
+    private static string _appVersion = Assembly.GetExecutingAssembly()
+                                        .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+                                        .InformationalVersion.Split('+')[0] ?? "unknown";
 }

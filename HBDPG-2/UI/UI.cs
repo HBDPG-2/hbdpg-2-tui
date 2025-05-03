@@ -7,8 +7,9 @@
 */
 
 using Terminal.Gui;
+using HBDPG2.Core;
 
-// namespace
+namespace HBDPG2.UI;
 
 public partial class MainWindow : Window
 {
@@ -36,7 +37,7 @@ public partial class MainWindow : Window
 
     private void InitializeUI()
     {
-        Add(_appName, _appDescription, _passphrase1Label, _passphrase1Input, _passphrase2Label, _passphrase2Input,
+        Add(_appNameLabel, _appDescriptionLabel, _passphrase1Label, _passphrase1Input, _passphrase2Label, _passphrase2Input,
             _passwordLengthLabel, _passwordLengthInput, _generateButton, _generateLabel, _clearButton, _autoClearLabel,
             _resultLabel, _resultField, _showPasswordCheckbox, _entropyLabel, _elapsedTimeLabel, _passwordCopiedLabel);
         
@@ -118,7 +119,7 @@ public partial class MainWindow : Window
             _clearButton.Visible = false;
             Application.MainLoop.RemoveTimeout(_timer);
 
-            Result result = await Task.Run(() => Core.Generate(_passphrase1, _passphrase2, _passwordLength));
+            Result result = await Task.Run(() => Core.Core.Generate(_passphrase1, _passphrase2, _passwordLength));
 
             _generateLabel.Visible = false;
             _generateButton.Visible = true;
