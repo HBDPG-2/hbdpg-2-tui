@@ -9,5 +9,9 @@
 using Terminal.Gui;
 using HBDPG2.UI;
 
-Application.Run<MainWindow>();
+Application.Init();
+
+var mainWindow = new MainWindow();
+
+Application.Run(mainWindow);
 Application.Shutdown();
