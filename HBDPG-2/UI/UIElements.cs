@@ -22,10 +22,6 @@ public partial class MainWindow : Window
     private static readonly Label _appNameLabel = new()
     {
         Text = "HBDPG-2\n(Hashing-based Deterministic Password Generator - 2nd Gen)",
-        // ColorScheme = new()
-        // {
-        //     Normal = Application.Driver.MakeAttribute(Color.White, Color.Magenta)
-        // },
         TextAlignment = Alignment.Center,
         Width = Dim.Fill()
     };
@@ -127,21 +123,13 @@ public partial class MainWindow : Window
 
     private static readonly TextField _resultField = new()
     {
-        ReadOnly = true,
+        // ReadOnly = true,
         Secret = true,
         Visible = false,
         TextAlignment = Alignment.End,
         X = Pos.Center(),
         Y = Pos.Bottom(_resultLabel),
-        Width = Dim.Fill(),
-        // ColorScheme = new()
-        // {
-        //     Normal = Application.Driver.MakeAttribute(Color.White, Color.Magenta),
-        //     Focus = Application.Driver.MakeAttribute(Color.Gray, Color.Magenta),
-        //     HotNormal = Application.Driver.MakeAttribute(Color.White, Color.Magenta),
-        //     HotFocus = Application.Driver.MakeAttribute(Color.Gray, Color.Magenta),
-        //     Disabled = Application.Driver.MakeAttribute(Color.White, Color.Magenta)
-        // }
+        Width = Dim.Fill()
     };
 
     private static readonly CheckBox _showPasswordCheckbox = new()

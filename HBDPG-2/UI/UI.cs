@@ -30,13 +30,13 @@ public partial class MainWindow : Window
         //     HotFocus = new Terminal.Gui.Drawing.Attribute(Color.Black, Color.Gray)
         // };
 
-        // ColorScheme = new ColorScheme
-        // {
-        //     Normal = new Terminal.Gui.Drawing.Attribute(Color.White, Color.Black),
-        //     Focus = new Terminal.Gui.Drawing.Attribute(Color.Black, Color.Gray),
-        //     HotNormal = new Terminal.Gui.Drawing.Attribute(Color.White, Color.Black),
-        //     HotFocus = new Terminal.Gui.Drawing.Attribute(Color.Black, Color.Gray)
-        // };
+        SetScheme(new Scheme()
+        {
+            Normal = new Terminal.Gui.Drawing.Attribute(Color.White, Color.Black),
+            Focus = new Terminal.Gui.Drawing.Attribute(Color.Black, Color.Gray),
+            HotNormal = new Terminal.Gui.Drawing.Attribute(Color.White, Color.Black),
+            HotFocus = new Terminal.Gui.Drawing.Attribute(Color.Black, Color.Gray)
+        });
 
         InitializeUI();
         SetupEvents();
@@ -44,6 +44,20 @@ public partial class MainWindow : Window
 
     private void InitializeUI()
     {
+        _appNameLabel.SetScheme(new Scheme()
+        {
+            Normal = new Terminal.Gui.Drawing.Attribute(Color.White, Color.Magenta)
+        });
+
+        _resultField.SetScheme(new Scheme()
+        {
+            Normal = new Terminal.Gui.Drawing.Attribute(Color.White, Color.Magenta),
+            Focus = new Terminal.Gui.Drawing.Attribute(Color.Gray, Color.Magenta),
+            HotNormal = new Terminal.Gui.Drawing.Attribute(Color.White, Color.Magenta),
+            HotFocus = new Terminal.Gui.Drawing.Attribute(Color.Gray, Color.Magenta),
+            Disabled = new Terminal.Gui.Drawing.Attribute(Color.White, Color.Magenta)
+        });
+
         Add(
             _appNameLabel,
             _appDescriptionLabel,
@@ -92,12 +106,9 @@ public partial class MainWindow : Window
 
     private void OnPasswordLengthChanged(object? sender, ResultEventArgs<string> args)
     {
-        if (args.Result is null) return;
-
-        if (args.Result.Length > 2)
+        if (args.Result is null || args.Result.Length > 2)
         {
             args.Handled = true;
-            // args.Cancel = true;
             return;
         }
 
@@ -106,7 +117,6 @@ public partial class MainWindow : Window
             if (!char.IsDigit(c))
             {
                 args.Handled = true;
-                // args.Cancel = true;
                 return;
             }
         }
