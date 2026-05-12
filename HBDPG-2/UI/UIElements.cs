@@ -1,4 +1,4 @@
-/*  Copyright (C) 2025 Piotr Kniaz
+/*  Copyright (C) 2025-2026 Piotr Kniaz
 
     This file is part of HBDPG-2.
     Repository: https://github.com/HBDPG-2/hbdpg-2-tui
@@ -7,44 +7,47 @@
 */
 
 using System.Reflection;
-using Terminal.Gui;
+using Terminal.Gui.Views;
+using Terminal.Gui.Drawing;
+using Terminal.Gui.ViewBase;
+using Terminal.Gui.App;
 
 namespace HBDPG2.UI;
 
 public partial class MainWindow : Window
 {
-    private static string _appVersion = Assembly.GetExecutingAssembly()
-                                        .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
-                                        .InformationalVersion.Split('+')[0] ?? "unknown";
-    private static Label _appNameLabel = new()
+    private static readonly string _appVersion = Assembly.GetExecutingAssembly()
+        .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+        .InformationalVersion.Split('+')[0] ?? "unknown";
+    private static readonly Label _appNameLabel = new()
     {
         Text = "HBDPG-2\n(Hashing-based Deterministic Password Generator - 2nd Gen)",
-        ColorScheme = new()
-        {
-            Normal = Application.Driver.MakeAttribute(Color.White, Color.Magenta)
-        },
-        TextAlignment = TextAlignment.Centered,
+        // ColorScheme = new()
+        // {
+        //     Normal = Application.Driver.MakeAttribute(Color.White, Color.Magenta)
+        // },
+        TextAlignment = Alignment.Center,
         Width = Dim.Fill()
     };
 
-    private static Label _appDescriptionLabel = new()
+    private static readonly Label _appDescriptionLabel = new()
     {
         Text = $"App version: {_appVersion}"
                + "\nCore version: 1.0-beta"
-               + "\n(C) 2025 Piotr Kniaz. MIT license",
-        TextAlignment = TextAlignment.Centered,
+               + "\n(C) 2025-2026 Piotr Kniaz. MIT license",
+        TextAlignment = Alignment.Center,
         Width = Dim.Fill(),
         Y = Pos.Bottom(_appNameLabel)
     };
 
-    private static Label _passphrase1Label = new()
+    private static readonly Label _passphrase1Label = new()
     {
         Text = "Passphrase 1:",
         X = 1,
         Y = Pos.Bottom(_appDescriptionLabel) + 1
     };
 
-    private static TextField _passphrase1Input = new("")
+    private static readonly TextField _passphrase1Input = new()
     {
         Secret = true,
         X = Pos.Right(_passphrase1Label) + 1,
@@ -52,14 +55,14 @@ public partial class MainWindow : Window
         Width = Dim.Fill() - 1
     };
 
-    private static Label _passphrase2Label  = new()
+    private static readonly Label _passphrase2Label  = new()
     {
         Text = "Passphrase 2:",
         X = 1,
         Y = Pos.Bottom(_passphrase1Label) + 1
     };
 
-    private static TextField _passphrase2Input = new("")
+    private static readonly TextField _passphrase2Input = new()
     {
         Secret = true,
         X = Pos.Right(_passphrase2Label) + 1,
@@ -67,29 +70,30 @@ public partial class MainWindow : Window
         Width = Dim.Fill() - 1
     };
 
-    private static Label _passwordLengthLabel = new()
+    private static readonly Label _passwordLengthLabel = new()
     {
         Text = "Password length:",
         X = 1,
         Y = Pos.Bottom(_passphrase2Label) + 1
     };
 
-    private static TextField _passwordLengthInput = new("32")
+    private static readonly TextField _passwordLengthInput = new()
     {
+        Text = "32",
         X = Pos.Right(_passwordLengthLabel) + 1,
         Y = Pos.Top(_passwordLengthLabel),
         Width = Dim.Fill() - 1
     };
 
-    private static Button _generateButton = new()
+    private static readonly Button _generateButton = new()
     {
         Text = "Generate",
         X = Pos.Center(),
         Y = Pos.Bottom(_passwordLengthLabel) + 1,
-        IsDefault = true
+        // IsDefault = true
     };
 
-    private static Label _generateLabel = new()
+    private static readonly Label _generateLabel = new()
     {
         Text = "Generating...",
         Visible = false,
@@ -97,7 +101,7 @@ public partial class MainWindow : Window
         Y = Pos.Bottom(_passwordLengthLabel) + 1,
     };
 
-    private static Button _clearButton = new()
+    private static readonly Button _clearButton = new()
     {
         Text = "Clear fields",
         Visible = false,
@@ -105,7 +109,7 @@ public partial class MainWindow : Window
         Y = Pos.Bottom(_generateButton)
     };
 
-    private static Label _autoClearLabel = new()
+    private static readonly Label _autoClearLabel = new()
     {
         Text = "Autoclear in 60 s",
         Visible = false,
@@ -113,7 +117,7 @@ public partial class MainWindow : Window
         Y = Pos.Bottom(_clearButton)
     };
 
-    private static Label _resultLabel = new()
+    private static readonly Label _resultLabel = new()
     {
         Text = "Result:",
         Visible = false,
@@ -121,35 +125,35 @@ public partial class MainWindow : Window
         Y = Pos.Bottom(_autoClearLabel) + 1
     };
 
-    private static TextField _resultField = new("")
+    private static readonly TextField _resultField = new()
     {
         ReadOnly = true,
         Secret = true,
         Visible = false,
-        TextAlignment = TextAlignment.Right,
+        TextAlignment = Alignment.End,
         X = Pos.Center(),
         Y = Pos.Bottom(_resultLabel),
         Width = Dim.Fill(),
-        ColorScheme = new()
-        {
-            Normal = Application.Driver.MakeAttribute(Color.White, Color.Magenta),
-            Focus = Application.Driver.MakeAttribute(Color.Gray, Color.Magenta),
-            HotNormal = Application.Driver.MakeAttribute(Color.White, Color.Magenta),
-            HotFocus = Application.Driver.MakeAttribute(Color.Gray, Color.Magenta),
-            Disabled = Application.Driver.MakeAttribute(Color.White, Color.Magenta)
-        }
+        // ColorScheme = new()
+        // {
+        //     Normal = Application.Driver.MakeAttribute(Color.White, Color.Magenta),
+        //     Focus = Application.Driver.MakeAttribute(Color.Gray, Color.Magenta),
+        //     HotNormal = Application.Driver.MakeAttribute(Color.White, Color.Magenta),
+        //     HotFocus = Application.Driver.MakeAttribute(Color.Gray, Color.Magenta),
+        //     Disabled = Application.Driver.MakeAttribute(Color.White, Color.Magenta)
+        // }
     };
 
-    private static CheckBox _showPasswordCheckbox = new()
+    private static readonly CheckBox _showPasswordCheckbox = new()
     {
         Text = "Show password",
-        Checked = false,
+        Value = CheckState.UnChecked,
         Visible = false,
         X = Pos.Center(),
         Y = Pos.Bottom(_resultField)
     };
 
-    private static Label _entropyLabel = new()
+    private static readonly Label _entropyLabel = new()
     {
         Text = "Entropy: 0.00 bits",
         Visible = false,
@@ -157,7 +161,7 @@ public partial class MainWindow : Window
         Y = Pos.Bottom(_showPasswordCheckbox)
     };
 
-    private static Label _elapsedTimeLabel = new()
+    private static readonly Label _elapsedTimeLabel = new()
     {
         Text = "Elapsed time: 0.000 s",
         Visible = false,
@@ -165,7 +169,7 @@ public partial class MainWindow : Window
         Y = Pos.Bottom(_entropyLabel)
     };
 
-    private static Label _passwordCopiedLabel = new()
+    private static readonly Label _passwordCopiedLabel = new()
     {
         Text = "Password copied to clipboard",
         Visible = false,

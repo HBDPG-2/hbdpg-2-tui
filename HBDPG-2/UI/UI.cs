@@ -1,4 +1,4 @@
-/*  Copyright (C) 2025 Piotr Kniaz
+/*  Copyright (C) 2025-2026 Piotr Kniaz
 
     This file is part of HBDPG-2.
     Repository: https://github.com/HBDPG-2/hbdpg-2-tui
@@ -6,30 +6,37 @@
     Licensed under the MIT License. See LICENSE file in the project root for details.
 */
 
-using Terminal.Gui;
+using Terminal.Gui.Views;
+using Terminal.Gui.ViewBase;
+using Terminal.Gui.Drawing;
+using Terminal.Gui.App;
+using Terminal.Gui.Input;
 using HBDPG2.Core;
 
 namespace HBDPG2.UI;
 
 public partial class MainWindow : Window
 {
-    public MainWindow()
+    public MainWindow(IApplication app)
     {
-        Title = "HBDPG-2 (Ctrl+Q to quit)";
-        Colors.Error = new ColorScheme {
-            Normal = Application.Driver.MakeAttribute(Color.White, Color.Red),
-            Focus = Application.Driver.MakeAttribute(Color.Black, Color.Gray),
-            HotNormal = Application.Driver.MakeAttribute(Color.White, Color.Red),
-            HotFocus = Application.Driver.MakeAttribute(Color.Black, Color.Gray)
-        };
+        _app = app;
 
-        ColorScheme = new ColorScheme
-        {
-            Normal = Application.Driver.MakeAttribute(Color.White, Color.Black),
-            Focus = Application.Driver.MakeAttribute(Color.Black, Color.Gray),
-            HotNormal = Application.Driver.MakeAttribute(Color.White, Color.Black),
-            HotFocus = Application.Driver.MakeAttribute(Color.Black, Color.Gray)
-        };
+        Title = "HBDPG-2 (Ctrl+Q to quit)";
+
+        // Colors.Error = new ColorScheme {
+        //     Normal = new Terminal.Gui.Drawing.Attribute(Color.White, Color.Red),
+        //     Focus = new Terminal.Gui.Drawing.Attribute(Color.Black, Color.Gray),
+        //     HotNormal = new Terminal.Gui.Drawing.Attribute(Color.White, Color.Red),
+        //     HotFocus = new Terminal.Gui.Drawing.Attribute(Color.Black, Color.Gray)
+        // };
+
+        // ColorScheme = new ColorScheme
+        // {
+        //     Normal = new Terminal.Gui.Drawing.Attribute(Color.White, Color.Black),
+        //     Focus = new Terminal.Gui.Drawing.Attribute(Color.Black, Color.Gray),
+        //     HotNormal = new Terminal.Gui.Drawing.Attribute(Color.White, Color.Black),
+        //     HotFocus = new Terminal.Gui.Drawing.Attribute(Color.Black, Color.Gray)
+        // };
 
         InitializeUI();
         SetupEvents();
@@ -37,51 +44,81 @@ public partial class MainWindow : Window
 
     private void InitializeUI()
     {
-        Add(_appNameLabel, _appDescriptionLabel, _passphrase1Label, _passphrase1Input, _passphrase2Label, _passphrase2Input,
-            _passwordLengthLabel, _passwordLengthInput, _generateButton, _generateLabel, _clearButton, _autoClearLabel,
-            _resultLabel, _resultField, _showPasswordCheckbox, _entropyLabel, _elapsedTimeLabel, _passwordCopiedLabel);
+        Add(
+            _appNameLabel,
+            _appDescriptionLabel,
+            _passphrase1Label,
+            _passphrase1Input,
+            _passphrase2Label,
+            _passphrase2Input,
+            _passwordLengthLabel,
+            _passwordLengthInput,
+            _generateButton,
+            _generateLabel,
+            _clearButton,
+            _autoClearLabel,
+            _resultLabel,
+            _resultField,
+            _showPasswordCheckbox,
+            _entropyLabel,
+            _elapsedTimeLabel,
+            _passwordCopiedLabel
+        );
         
-        if (Clipboard.IsSupported)
+        if (_app.Clipboard?.IsSupported ?? false)
         {
             _clearButton.Text = "Clear fields and clipboard";
         }
         else
         {
-            MessageBox.ErrorQuery("Clipboard is not supported", "You may encounter problems when trying to copy!", "OK");
+            MessageBox.ErrorQuery(
+                _app,
+                "Clipboard is not supported",
+                "You may encounter problems when trying to copy!",
+                "OK"
+            );
         }
     }
 
     private void SetupEvents()
     {
         _passwordLengthInput.TextChanging += OnPasswordLengthChanged;
-        _generateButton.Clicked += Generate;
-        _clearButton.Clicked += ClearFieldsAndClipboard;
-        _showPasswordCheckbox.Toggled += ShowPassword;
+        _generateButton.Accepted += OnGenerateButtonClicked;
+        _clearButton.Accepted += OnClearButtonClicked;
+        _showPasswordCheckbox.ValueChanged += ShowPassword;
 
-        Closing += OnClosed;
+        // Closing += OnClosed;
     }
 
-    private void OnPasswordLengthChanged(TextChangingEventArgs args)
+    private void OnPasswordLengthChanged(object? sender, ResultEventArgs<string> args)
     {
-        if (args.NewText.Length > 2)
+        if (args.Result is null) return;
+
+        if (args.Result.Length > 2)
         {
-            args.Cancel = true;
+            args.Handled = true;
+            // args.Cancel = true;
             return;
         }
 
-        foreach (char c in args.NewText.Select(v => (char)v))
+        foreach (char c in args.Result)
         {
             if (!char.IsDigit(c))
             {
-                args.Cancel = true;
+                args.Handled = true;
+                // args.Cancel = true;
                 return;
             }
         }
     }
 
-    private void ShowPassword(bool newState)
+    private void OnGenerateButtonClicked(object? sender, CommandEventArgs args) => Generate();
+
+    private void OnClearButtonClicked(object? sender, CommandEventArgs args) => ClearFieldsAndClipboard();
+
+    private void ShowPassword(object? sender, ValueChangedEventArgs<CheckState> args)
     {
-        if (_showPasswordCheckbox.Checked)
+        if (_showPasswordCheckbox.Value is CheckState.Checked)
         {
             _resultField.Secret = false;
         }
@@ -103,11 +140,21 @@ public partial class MainWindow : Window
 
         if (_passphrase1.Length < 8 || _passphrase2.Length < 8)
         {
-            MessageBox.ErrorQuery("Passphrase is too short", "Passphrases must be at least 8 characters long.", "OK");
+            MessageBox.ErrorQuery(
+                _app,
+                "Passphrase is too short",
+                "Passphrases must be at least 8 characters long.",
+                "OK"
+            );
         }
         else if (_passwordLength < 16 || _passwordLength > 64)
         {
-            MessageBox.ErrorQuery("Invalid password length", "Number must be between 16 and 64.", "OK");
+            MessageBox.ErrorQuery(
+                _app,
+                "Invalid password length",
+                "Number must be between 16 and 64.",
+                "OK"
+            );
         }
         else
         {
@@ -117,7 +164,10 @@ public partial class MainWindow : Window
             _autoClearLabel.Text = $"Autoclear in {_autoClearRemaining} s";
             _autoClearLabel.Visible = false;
             _clearButton.Visible = false;
-            Application.MainLoop.RemoveTimeout(_timer);
+            if (_timer is not null)
+            {
+                _app.RemoveTimeout(_timer);
+            }
 
             Result result = await Task.Run(() => Core.Core.Generate(_passphrase1, _passphrase2, _passwordLength));
 
@@ -126,7 +176,11 @@ public partial class MainWindow : Window
 
             if (result.Password is null)
             {
-                MessageBox.ErrorQuery("Failed to generate secure password", "Try another passphrases or password length.", "OK");
+                MessageBox.ErrorQuery(
+                    _app,
+                    "Failed to generate secure password",
+                    "Try another passphrases or password length.", "OK"
+                );
                 ClearFieldsAndClipboard();
                 return;
             }
@@ -148,9 +202,9 @@ public partial class MainWindow : Window
             _elapsedTimeLabel.Text = $"Elapsed time: {result.ElapsedTime:f3} s";
             _elapsedTimeLabel.Visible = true;
 
-            _timer = Application.MainLoop.AddTimeout(TimeSpan.FromSeconds(1), Counter);
+            _timer = _app.AddTimeout(TimeSpan.FromSeconds(1), Counter);
 
-            if (Clipboard.TrySetClipboardData(result.Password))
+            if (_app.Clipboard?.TrySetClipboardData(result.Password) ?? false)
             {
                 _resultField.CanFocus = false;
                 _passwordCopiedLabel.Visible = true;
@@ -164,9 +218,9 @@ public partial class MainWindow : Window
 
     private void ClearFieldsAndClipboard()
     {
-        if (Clipboard.TryGetClipboardData(out string data) && data == _resultField.Text)
+        if (_app.Clipboard?.TryGetClipboardData(out string data) ?? false && data == _resultField.Text)
         {
-            Clipboard.TrySetClipboardData(string.Empty);
+            _app.Clipboard.TrySetClipboardData(string.Empty);
         }
 
         _passphrase1 = string.Empty;
@@ -177,7 +231,10 @@ public partial class MainWindow : Window
         _passphrase2Input.Text = string.Empty;
         _passwordLengthInput.Text = "32";
 
-        Application.MainLoop.RemoveTimeout(_timer);
+        if (_timer is not null)
+        {
+            _app.RemoveTimeout(_timer);
+        }
         _autoClearRemaining = 60;
         _autoClearLabel.Text = $"Autoclear in {_autoClearRemaining} s";
         _resultField.Text = string.Empty;
@@ -201,7 +258,7 @@ public partial class MainWindow : Window
         ClearFieldsAndClipboard();
     }
 
-    private bool Counter(MainLoop loop)
+    private bool Counter()
     {
         if (_autoClearRemaining != 0)
         {
@@ -219,6 +276,7 @@ public partial class MainWindow : Window
     private string _passphrase2 = string.Empty;
     private int _passwordLength;
 
+    private readonly IApplication _app;
     private object? _timer;
     private int _autoClearRemaining = 60;
 }
